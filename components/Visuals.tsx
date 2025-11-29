@@ -24,62 +24,71 @@ export const GameHUD: React.FC<{ mode: GameMode }> = ({ mode }) => {
 };
 
 export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) => {
-  const colorClass = isPlayer ? "text-cyan-500" : "text-rose-500";
+  // Common rotation for opponent
   const iconRotateClass = isPlayer ? "" : "rotate-180";
 
   if (!action) return <div className="h-24 w-24 opacity-10 bg-slate-400/20 rounded-full animate-pulse my-6" />;
 
   const renderContent = () => {
     switch (action) {
-      // --- CLASSIC ---
+      // --- CLASSIC MODE GESTURES (Icon Style) ---
       case ActionType.CHARGE:
         return (
           <>
             <div className={`relative ${iconRotateClass}`}>
-              <Hand className={`w-24 h-24 text-blue-500 animate-bounce drop-shadow-md`} />
-              <div className="absolute inset-0 bg-blue-300/20 blur-xl rounded-full animate-pulse" />
+              <Hand className={`w-24 h-24 ${isPlayer ? 'text-blue-500' : 'text-rose-500'}`} />
             </div>
-            <span className="font-bold text-blue-600 mt-2 text-lg arcade-font leading-relaxed py-1">蓄力中</span>
+            <span className={`font-bold ${isPlayer ? 'text-blue-600' : 'text-rose-600'} mt-2 text-lg arcade-font leading-relaxed py-1`}>蓄力</span>
           </>
         );
+
       case ActionType.DEFEND:
         return (
           <>
             <div className={`relative ${iconRotateClass}`}>
-              <Shield className={`w-24 h-24 text-slate-400 drop-shadow-md`} />
+              <Shield className="w-24 h-24 text-slate-500" />
+              <div className="absolute inset-0 bg-slate-400/10 blur-xl rounded-full" />
             </div>
-            <span className="font-bold text-slate-500 mt-2 text-lg arcade-font leading-relaxed py-1">普通防御</span>
+            <span className="font-bold text-slate-600 mt-2 text-lg arcade-font leading-relaxed py-1">防御</span>
           </>
         );
+
       case ActionType.MAGIC_DEFEND:
         return (
           <>
-            <div className={`relative ${iconRotateClass}`}>
-              <ShieldAlert className={`w-24 h-24 text-purple-500 animate-pulse drop-shadow-md`} />
+             <div className={`relative ${iconRotateClass}`}>
+              <ShieldAlert className="w-24 h-24 text-purple-500" />
+              <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full animate-pulse" />
+              <div className="absolute -inset-2 border-2 border-purple-300 rounded-full animate-spin-slow opacity-50 border-dashed" />
             </div>
             <span className="font-bold text-purple-600 mt-2 text-lg arcade-font leading-relaxed py-1">魔法防御</span>
           </>
         );
+
       case ActionType.ATTACK_SMALL:
         return (
           <>
             <div className={`relative ${iconRotateClass}`}>
-              <Sword className={`w-24 h-24 ${colorClass} drop-shadow-md`} />
+              <Zap className={`w-24 h-24 ${isPlayer ? 'text-cyan-500' : 'text-rose-500'}`} />
+              <div className={`absolute inset-0 ${isPlayer ? 'bg-cyan-400/30' : 'bg-rose-400/30'} blur-xl rounded-full`} />
             </div>
-            <span className={`font-bold mt-2 text-lg arcade-font leading-relaxed py-1 ${isPlayer ? 'text-cyan-600' : 'text-rose-600'}`}>小波攻击</span>
-          </>
-        );
-      case ActionType.ATTACK_BIG:
-        return (
-          <>
-            <div className={`relative ${iconRotateClass}`}>
-              <Flame className={`w-32 h-32 ${isPlayer ? 'text-orange-500' : 'text-red-600'} animate-pulse drop-shadow-lg`} />
-            </div>
-            <span className="font-bold text-red-600 mt-2 text-lg uppercase tracking-widest arcade-font leading-relaxed py-1">大波攻击</span>
+            <span className={`font-bold ${isPlayer ? 'text-cyan-600' : 'text-rose-600'} mt-2 text-lg arcade-font leading-relaxed py-1`}>小波</span>
           </>
         );
 
-      // --- PEGASUS (Gold/Orange) ---
+      case ActionType.ATTACK_BIG:
+        return (
+          <>
+             <div className={`relative ${iconRotateClass}`}>
+              <Flame className={`w-28 h-28 ${isPlayer ? 'text-orange-500' : 'text-red-600'} animate-pulse`} />
+              <div className={`absolute inset-0 ${isPlayer ? 'bg-orange-500/30' : 'bg-red-600/30'} blur-2xl rounded-full`} />
+            </div>
+            <span className="font-bold text-red-600 mt-2 text-xl arcade-font leading-relaxed py-1 uppercase tracking-widest">大波</span>
+          </>
+        );
+
+      // --- TRI-PHASE / OTHER MODES ---
+      // PEGASUS (Gold/Orange)
       case ActionType.PEGASUS_ATK_T1:
       case ActionType.PEGASUS_ATK_T2:
       case ActionType.PEGASUS_ULT:
@@ -109,7 +118,7 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
           </>
         );
 
-      // --- ICE (Cyan/Blue) ---
+      // ICE (Cyan/Blue)
       case ActionType.ICE_ATK_T1:
       case ActionType.ICE_ATK_T2:
       case ActionType.ICE_ULT:
@@ -137,7 +146,7 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
           </>
         );
 
-      // --- COTTON (Pink) ---
+      // COTTON (Pink)
       case ActionType.COTTON_ATK_T1:
       case ActionType.COTTON_ATK_T2:
       case ActionType.COTTON_ULT:
@@ -171,7 +180,7 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[140px]">
+    <div className="relative flex flex-col items-center justify-center min-h-[160px]">
       {renderContent()}
     </div>
   );

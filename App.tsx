@@ -21,7 +21,8 @@ const SOUND_ASSETS = {
   attackSmall: 'https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/player_shoot.wav',
   attackBig: 'https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/explosion_02.wav',
   win: 'https://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a',
-  lose: 'https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/character_died.wav'
+  // Replaced broken sound with a working explosion sound
+  lose: 'https://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/explosion.mp3'
 };
 
 const App: React.FC = () => {
