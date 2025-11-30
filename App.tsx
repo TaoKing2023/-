@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ActionType, GameStatus, PlayerState, RoundResult, LogEntry, ACTION_DETAILS, GameMode, Faction } from './types';
 import { resolveRound, resolveRoundTriPhase, getAIAction } from './utils/gameLogic';
@@ -90,8 +91,8 @@ const TRI_PHASE_TUTORIAL_CONFIG: Record<number, { pEnergy: number, aiEnergy: num
     pEnergy: 0,
     aiEnergy: 3,
     aiAction: ActionType.COTTON_ULT,
-    target: ActionType.PEGASUS_DEF_ELE,
-    text: "危险！对手切换到了【绵柔】流派，而且有3点气，即将释放最强的T3奥义！\n你的普通防御挡不住T3，必须利用属性特性。\n规则是：绵柔 克 天马，但天马防 可以完美防御 绵柔系的所有攻击。\n快点击黄色盾牌【天马防】！"
+    target: ActionType.ICE_DEF_ELE,
+    text: "危险！对手切换到了【绵柔】流派，而且有3点气，即将释放最强的T3奥义！\n普通防御挡不住T3，必须利用属性克制。\n规则是：寒冰 克 绵柔，只有寒冰系的防御能挡下绵柔攻击。\n快切换到寒冰流派，点击蓝色盾牌【冰防】！"
   },
   5: {
     pEnergy: 3,
@@ -645,7 +646,7 @@ const App: React.FC = () => {
                          <h4 className="font-bold text-slate-700 mb-2">防御规则</h4>
                          <ul className="text-sm text-slate-600 space-y-1 list-disc pl-4">
                             <li><span className="font-bold">普通防御</span>：只能防御T1级别的攻击。</li>
-                            <li><span className="font-bold">属性防御</span>：0消耗。可以防御该属性克制的流派的所有攻击（T1-T3）。例如：天马防可以完美防御绵柔系的任何攻击。</li>
+                            <li><span className="font-bold">属性防御</span>：0消耗。可以防御该属性克制的流派的所有攻击（T1-T3）。例如：天马克制寒冰，所以【天马防】可以完美防御【寒冰】流派的所有攻击。</li>
                          </ul>
                       </section>
                       <section>

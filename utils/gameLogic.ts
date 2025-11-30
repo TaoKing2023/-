@@ -1,4 +1,5 @@
 
+
 import { ActionType, RoundResult, PlayerState, Faction, ACTION_DETAILS, GameMode } from '../types';
 
 // CYCLE: PEGASUS > ICE > COTTON > PEGASUS
@@ -10,14 +11,14 @@ const FACTION_ADVANTAGE: Record<Faction, Faction> = {
 };
 
 // DEFENSE LOGIC: Which faction does this defense block?
-// User Rules:
-// Pegasus Defend blocks Cotton (T1, T2, T3)
-// Ice Defend blocks Pegasus (T1, T2, T3)
-// Cotton Defend blocks Ice (T1, T2, T3)
+// Rule: A Faction Defense blocks the Faction it beats (Advantageous Defense).
+// Pegasus > Ice => Pegasus Defense blocks Ice
+// Ice > Cotton => Ice Defense blocks Cotton
+// Cotton > Pegasus => Cotton Defense blocks Pegasus
 const DEFENSE_TARGETS: Record<Faction, Faction> = {
-  [Faction.PEGASUS]: Faction.COTTON,
-  [Faction.ICE]: Faction.PEGASUS,
-  [Faction.COTTON]: Faction.ICE,
+  [Faction.PEGASUS]: Faction.ICE,
+  [Faction.ICE]: Faction.COTTON,
+  [Faction.COTTON]: Faction.PEGASUS,
 };
 
 const getActionTier = (action: ActionType): number => {

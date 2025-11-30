@@ -23,19 +23,19 @@ export enum ActionType {
   // Tri-Phase: Pegasus (Gold)
   PEGASUS_ATK_T1 = 'PEGASUS_ATK_T1', // 1 Qi
   PEGASUS_ATK_T2 = 'PEGASUS_ATK_T2', // 2 Qi
-  PEGASUS_DEF_ELE = 'PEGASUS_DEF_ELE', // 0 Qi, Blocks Cotton
+  PEGASUS_DEF_ELE = 'PEGASUS_DEF_ELE', // 0 Qi, Blocks Ice
   PEGASUS_ULT = 'PEGASUS_ULT', // 3 Qi
 
   // Tri-Phase: Ice (Blue)
   ICE_ATK_T1 = 'ICE_ATK_T1', // 1 Qi
   ICE_ATK_T2 = 'ICE_ATK_T2', // 2 Qi
-  ICE_DEF_ELE = 'ICE_DEF_ELE', // 0 Qi, Blocks Pegasus
+  ICE_DEF_ELE = 'ICE_DEF_ELE', // 0 Qi, Blocks Cotton
   ICE_ULT = 'ICE_ULT', // 3 Qi
 
   // Tri-Phase: Cotton (Pink)
   COTTON_ATK_T1 = 'COTTON_ATK_T1', // 1 Qi
   COTTON_ATK_T2 = 'COTTON_ATK_T2', // 2 Qi
-  COTTON_DEF_ELE = 'COTTON_DEF_ELE', // 0 Qi, Blocks Ice
+  COTTON_DEF_ELE = 'COTTON_DEF_ELE', // 0 Qi, Blocks Pegasus
   COTTON_ULT = 'COTTON_ULT', // 3 Qi
 }
 
@@ -79,18 +79,18 @@ export const ACTION_DETAILS: Record<ActionType, { label: string; cost: number; m
   // Pegasus
   [ActionType.PEGASUS_ATK_T1]: { label: '天马攻', cost: 1, minEnergy: 1, description: '普通攻击。', faction: Faction.PEGASUS },
   [ActionType.PEGASUS_ATK_T2]: { label: '天马拳', cost: 2, minEnergy: 2, description: '重型攻击。拼招之王，破冰箭。', faction: Faction.PEGASUS },
-  [ActionType.PEGASUS_DEF_ELE]: { label: '天马防', cost: 0, minEnergy: 0, description: '克制绵柔。能防绵柔T1-T3。', faction: Faction.PEGASUS },
+  [ActionType.PEGASUS_DEF_ELE]: { label: '天马防', cost: 0, minEnergy: 0, description: '克制寒冰。能防寒冰T1-T3。', faction: Faction.PEGASUS },
   [ActionType.PEGASUS_ULT]: { label: '天马流星拳', cost: 3, minEnergy: 3, description: '终极攻击。', faction: Faction.PEGASUS },
 
   // Ice
   [ActionType.ICE_ATK_T1]: { label: '冰攻', cost: 1, minEnergy: 1, description: '普通攻击。', faction: Faction.ICE },
   [ActionType.ICE_ATK_T2]: { label: '冰箭', cost: 2, minEnergy: 2, description: '重型攻击。', faction: Faction.ICE },
-  [ActionType.ICE_DEF_ELE]: { label: '冰防', cost: 0, minEnergy: 0, description: '克制天马。能防天马T1-T3。', faction: Faction.ICE },
+  [ActionType.ICE_DEF_ELE]: { label: '冰防', cost: 0, minEnergy: 0, description: '克制绵柔。能防绵柔T1-T3。', faction: Faction.ICE },
   [ActionType.ICE_ULT]: { label: '超冰', cost: 3, minEnergy: 3, description: '终极攻击。', faction: Faction.ICE },
 
   // Cotton
   [ActionType.COTTON_ATK_T1]: { label: '绵攻', cost: 1, minEnergy: 1, description: '普通攻击。', faction: Faction.COTTON },
   [ActionType.COTTON_ATK_T2]: { label: '绵掌', cost: 2, minEnergy: 2, description: '重型攻击。', faction: Faction.COTTON },
-  [ActionType.COTTON_DEF_ELE]: { label: '绵防', cost: 0, minEnergy: 0, description: '克制寒冰。能防寒冰T1-T3。', faction: Faction.COTTON },
+  [ActionType.COTTON_DEF_ELE]: { label: '绵防', cost: 0, minEnergy: 0, description: '克制天马。能防天马T1-T3。', faction: Faction.COTTON },
   [ActionType.COTTON_ULT]: { label: '通心拳', cost: 3, minEnergy: 3, description: '终极攻击。', faction: Faction.COTTON },
 };
