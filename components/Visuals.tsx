@@ -12,13 +12,13 @@ export const GameHUD: React.FC<{ mode: GameMode }> = ({ mode }) => {
 
   return (
     <div className="absolute top-2 right-2 bg-white/80 backdrop-blur rounded-lg p-2 text-[10px] shadow-sm border border-slate-200 flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
-      <div className="flex items-center text-amber-500 font-bold"><Sun className="w-3 h-3 mr-1"/>天马</div>
+      <div className="flex items-center text-amber-500 font-bold"><span className="mr-1 text-base leading-none">☄️</span>天马</div>
       <span className="text-slate-400">&gt;</span>
-      <div className="flex items-center text-cyan-500 font-bold"><Snowflake className="w-3 h-3 mr-1"/>寒冰</div>
+      <div className="flex items-center text-cyan-500 font-bold"><span className="mr-1 text-base leading-none">🧊</span>寒冰</div>
       <span className="text-slate-400">&gt;</span>
-      <div className="flex items-center text-pink-500 font-bold"><Cloud className="w-3 h-3 mr-1"/>绵柔</div>
+      <div className="flex items-center text-pink-500 font-bold"><span className="mr-1 text-base leading-none">☯️</span>绵柔</div>
       <span className="text-slate-400">&gt;</span>
-      <div className="flex items-center text-amber-500 font-bold"><Sun className="w-3 h-3 mr-1"/></div>
+      <div className="flex items-center text-amber-500 font-bold"><span className="mr-1 text-base leading-none">☄️</span></div>
     </div>
   );
 };
@@ -88,17 +88,20 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
         );
 
       // --- TRI-PHASE / OTHER MODES ---
-      // PEGASUS (Gold/Orange)
+      // PEGASUS (Gold/Orange) -> METEOR
       case ActionType.PEGASUS_ATK_T1:
       case ActionType.PEGASUS_ATK_T2:
       case ActionType.PEGASUS_ULT:
         return (
           <>
-            <div className={`relative ${iconRotateClass}`}>
-              {action === ActionType.PEGASUS_ATK_T1 && <Wind className="w-24 h-24 text-amber-400" />}
-              {action === ActionType.PEGASUS_ATK_T2 && <Sun className="w-28 h-28 text-amber-500 animate-pulse" />}
-              {action === ActionType.PEGASUS_ULT && <Star className="w-32 h-32 text-amber-600 animate-spin-slow" />}
-              <div className="absolute inset-0 bg-amber-400/20 blur-xl rounded-full" />
+            <div className={`relative ${iconRotateClass} flex items-center justify-center w-24 h-24`}>
+              <span className={`text-7xl drop-shadow-md filter sepia-[0.2] ${
+                   action === ActionType.PEGASUS_ULT ? 'animate-spin-slow' : 
+                   (action === ActionType.PEGASUS_ATK_T2 ? 'animate-pulse scale-110' : '')
+               }`}>
+                 ☄️
+               </span>
+              <div className="absolute inset-0 bg-amber-400/20 blur-xl rounded-full -z-10" />
             </div>
             <span className="font-bold text-amber-600 mt-2 text-lg arcade-font leading-relaxed py-1">
                 {action === ActionType.PEGASUS_ULT ? '天马流星拳' : (action === ActionType.PEGASUS_ATK_T2 ? '天马拳' : '天马攻')}
@@ -110,23 +113,28 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
           <>
             <div className={`relative ${iconRotateClass}`}>
               <Shield className="w-24 h-24 text-amber-500" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                 <Wind className="w-12 h-12 text-white opacity-80" />
+              <div className="absolute inset-0 flex items-center justify-center pt-1">
+                 <span className="text-4xl filter grayscale-[0.2]">☄️</span>
               </div>
             </div>
             <span className="font-bold text-amber-600 mt-2 text-lg arcade-font leading-relaxed py-1">天马防</span>
           </>
         );
 
-      // ICE (Cyan/Blue)
+      // ICE (Cyan/Blue) -> ICE CUBE
       case ActionType.ICE_ATK_T1:
       case ActionType.ICE_ATK_T2:
       case ActionType.ICE_ULT:
         return (
           <>
-            <div className={`relative ${iconRotateClass}`}>
-              <Snowflake className={`w-24 h-24 text-cyan-400 ${action === ActionType.ICE_ULT ? 'animate-spin' : ''}`} />
-              <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-full" />
+            <div className={`relative ${iconRotateClass} flex items-center justify-center w-24 h-24`}>
+              <span className={`text-7xl drop-shadow-md ${
+                   action === ActionType.ICE_ULT ? 'animate-bounce' : 
+                   (action === ActionType.ICE_ATK_T2 ? 'scale-110' : '')
+               }`}>
+                 🧊
+               </span>
+              <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-full -z-10" />
             </div>
             <span className="font-bold text-cyan-600 mt-2 text-lg arcade-font leading-relaxed py-1">
                 {action === ActionType.ICE_ULT ? '超冰' : (action === ActionType.ICE_ATK_T2 ? '冰箭' : '冰攻')}
@@ -138,23 +146,28 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
           <>
              <div className={`relative ${iconRotateClass}`}>
               <Shield className="w-24 h-24 text-cyan-500" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                 <Snowflake className="w-12 h-12 text-white opacity-80" />
+              <div className="absolute inset-0 flex items-center justify-center pt-1">
+                 <span className="text-4xl">🧊</span>
               </div>
             </div>
             <span className="font-bold text-cyan-600 mt-2 text-lg arcade-font leading-relaxed py-1">冰防</span>
           </>
         );
 
-      // COTTON (Pink)
+      // COTTON (Pink) -> TAIJI
       case ActionType.COTTON_ATK_T1:
       case ActionType.COTTON_ATK_T2:
       case ActionType.COTTON_ULT:
         return (
           <>
-            <div className={`relative ${iconRotateClass}`}>
-              <Cloud className={`w-24 h-24 text-pink-400 ${action === ActionType.COTTON_ULT ? 'scale-110' : ''}`} />
-              {action === ActionType.COTTON_ULT && <div className="absolute inset-0 bg-pink-400/30 blur-xl rounded-full" />}
+            <div className={`relative ${iconRotateClass} flex items-center justify-center w-24 h-24`}>
+              <span className={`text-7xl drop-shadow-md ${
+                   action === ActionType.COTTON_ULT ? 'animate-spin-slow' : 
+                   (action === ActionType.COTTON_ATK_T2 ? 'scale-110' : '')
+               }`}>
+                 ☯️
+               </span>
+              {action === ActionType.COTTON_ULT && <div className="absolute inset-0 bg-pink-400/30 blur-xl rounded-full -z-10" />}
             </div>
             <span className="font-bold text-pink-600 mt-2 text-lg arcade-font leading-relaxed py-1">
                  {action === ActionType.COTTON_ULT ? '通心拳' : (action === ActionType.COTTON_ATK_T2 ? '绵掌' : '绵攻')}
@@ -166,8 +179,8 @@ export const ActionVisual: React.FC<ActionIconProps> = ({ action, isPlayer }) =>
           <>
              <div className={`relative ${iconRotateClass}`}>
               <Shield className="w-24 h-24 text-pink-500" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                 <Feather className="w-12 h-12 text-white opacity-80" />
+              <div className="absolute inset-0 flex items-center justify-center pt-1">
+                 <span className="text-4xl">☯️</span>
               </div>
             </div>
             <span className="font-bold text-pink-600 mt-2 text-lg arcade-font leading-relaxed py-1">绵防</span>

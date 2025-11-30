@@ -1,28 +1,49 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { ActionType, ACTION_DETAILS, GameMode, Faction } from '../types';
-import { Zap, Shield, Hand, Flame, ShieldAlert, Sun, Snowflake, Cloud, Sword, Wind, Star, Feather } from 'lucide-react';
+import { Zap, Shield, Hand, Flame, ShieldAlert, Cloud, Sword } from 'lucide-react';
 
 interface ControlsProps {
   energy: number;
   onAction: (action: ActionType) => void;
   disabled: boolean;
   gameMode: GameMode;
+  highlightAction?: ActionType | null;
 }
 
-export const Controls: React.FC<ControlsProps> = ({ energy, onAction, disabled, gameMode }) => {
+// Emoji Icon Wrappers
+const IconMeteor = ({ className }: { className?: string }) => <span className={`${className} flex items-center justify-center text-lg leading-none`} role="img" aria-label="meteor">☄️</span>;
+const IconIce = ({ className }: { className?: string }) => <span className={`${className} flex items-center justify-center text-lg leading-none`} role="img" aria-label="ice">🧊</span>;
+const IconTaiji = ({ className }: { className?: string }) => <span className={`${className} flex items-center justify-center text-lg leading-none`} role="img" aria-label="taiji">☯️</span>;
+
+export const Controls: React.FC<ControlsProps> = ({ energy, onAction, disabled, gameMode, highlightAction }) => {
   const [activeTab, setActiveTab] = useState<Faction>(Faction.PEGASUS);
 
+  // Auto-switch tab if the highlighted action belongs to a specific faction
+  useEffect(() => {
+    if (highlightAction) {
+      const details = ACTION_DETAILS[highlightAction];
+      if (details?.faction) {
+        setActiveTab(details.faction);
+      }
+    }
+  }, [highlightAction]);
+
   const getIcon = (action: ActionType) => {
-      if (action.includes('PEGASUS')) return action.includes('ULT') ? Star : (action.includes('DEF') ? Shield : Sun);
-      if (action.includes('ICE')) return action.includes('ULT') ? Snowflake : (action.includes('DEF') ? Shield : Snowflake);
-      if (action.includes('COTTON')) return action.includes('ULT') ? Cloud : (action.includes('DEF') ? Shield : Feather);
+      if (action.includes('PEGASUS')) return action.includes('DEF') ? Shield : IconMeteor;
+      if (action.includes('ICE')) return action.includes('DEF') ? Shield : IconIce;
+      if (action.includes('COTTON')) return action.includes('DEF') ? Shield : IconTaiji;
       return Zap; // Fallback
   };
 
   const renderButton = (action: ActionType, IconOverride?: React.ElementType, colorOverride?: string) => {
     const details = ACTION_DETAILS[action];
     const canAfford = energy >= details.minEnergy;
-    const isLocked = !canAfford;
+    
+    // In Tutorial mode with highlight, strictly enforce availability
+    const isHighlighted = highlightAction === action;
+    const isLocked = highlightAction ? !isHighlighted : !canAfford;
+    const isDimmed = highlightAction && !isHighlighted;
 
     let colorStyle = 'text-gray-500 border-gray-200';
     
@@ -43,24 +64,32 @@ export const Controls: React.FC<ControlsProps> = ({ energy, onAction, disabled, 
         onClick={() => onAction(action)}
         disabled={disabled || isLocked}
         className={`
-          w-full relative flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all duration-200 shadow-sm min-h-[70px]
+          w-full relative flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all duration-300 shadow-sm min-h-[70px]
           ${isLocked 
             ? 'border-slate-100 bg-slate-50 opacity-40 cursor-not-allowed text-slate-400' 
             : `${colorOverride || colorStyle} bg-white hover:scale-105 active:scale-95 cursor-pointer shadow-md`
           }
+          ${isHighlighted ? 'ring-4 ring-offset-2 ring-yellow-400 scale-105 z-20 animate-pulse border-yellow-400' : ''}
+          ${isDimmed ? 'opacity-20 blur-[1px]' : ''}
         `}
       >
-        <Icon className={`w-5 h-5 mb-1 ${isLocked ? 'text-slate-400' : ''}`} />
+        <Icon className={`w-5 h-5 mb-1 ${isLocked ? 'grayscale opacity-50' : ''}`} />
         <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-wider arcade-font ${isLocked ? 'text-slate-400' : 'text-slate-700'}`}>{details.label}</span>
         <span className="text-[9px] text-slate-400">
             {details.cost > 0 ? `-${details.cost}气` : (details.minEnergy > 0 ? `需${details.minEnergy}` : '0气')}
         </span>
+        
+        {isHighlighted && (
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full animate-bounce whitespace-nowrap z-30">
+            点击这里!
+          </span>
+        )}
       </button>
     );
   };
 
-  // --- CLASSIC LAYOUT ---
-  if (gameMode === GameMode.CLASSIC) {
+  // --- CLASSIC / CLASSIC TUTORIAL LAYOUT ---
+  if (gameMode === GameMode.CLASSIC || gameMode === GameMode.TUTORIAL) {
     return (
         <div className="grid grid-cols-5 gap-2 w-full max-w-2xl mx-auto px-4 pb-8">
         {renderButton(ActionType.CHARGE, Hand)}
@@ -72,7 +101,7 @@ export const Controls: React.FC<ControlsProps> = ({ energy, onAction, disabled, 
     );
   }
 
-  // --- TRI-PHASE LAYOUT ---
+  // --- TRI-PHASE / TRI-PHASE TUTORIAL LAYOUT ---
   
   // Define Tab Content
   const renderTabContent = () => {
@@ -114,19 +143,19 @@ export const Controls: React.FC<ControlsProps> = ({ energy, onAction, disabled, 
                 onClick={() => setActiveTab(Faction.PEGASUS)}
                 className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${activeTab === Faction.PEGASUS ? 'bg-white text-amber-500 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
              >
-                 <Sun className="w-4 h-4" /> 天马
+                 <IconMeteor className="w-4 h-4" /> 天马
              </button>
              <button 
                 onClick={() => setActiveTab(Faction.ICE)}
                 className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${activeTab === Faction.ICE ? 'bg-white text-cyan-500 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
              >
-                 <Snowflake className="w-4 h-4" /> 寒冰
+                 <IconIce className="w-4 h-4" /> 寒冰
              </button>
              <button 
                 onClick={() => setActiveTab(Faction.COTTON)}
                 className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${activeTab === Faction.COTTON ? 'bg-white text-pink-500 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
              >
-                 <Cloud className="w-4 h-4" /> 绵柔
+                 <IconTaiji className="w-4 h-4" /> 绵柔
              </button>
         </div>
 

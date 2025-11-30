@@ -2,6 +2,8 @@
 export enum GameMode {
   CLASSIC = 'CLASSIC',
   TRI_PHASE = 'TRI_PHASE',
+  TUTORIAL = 'TUTORIAL',
+  TRI_PHASE_TUTORIAL = 'TRI_PHASE_TUTORIAL',
 }
 
 export enum Faction {
@@ -63,6 +65,7 @@ export interface LogEntry {
   playerAction: ActionType;
   aiAction: ActionType;
   resultMessage: string;
+  result?: RoundResult;
 }
 
 export const ACTION_DETAILS: Record<ActionType, { label: string; cost: number; minEnergy: number; description: string; faction?: Faction }> = {
